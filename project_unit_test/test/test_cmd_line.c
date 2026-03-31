@@ -2,20 +2,29 @@
 #include <string.h> 
 #include "unity.h" 
 #include "cmd_line.h"
-/* ================= MOCK ================= */ static int func_called; static char last_cmd[100]; void mock_func(uint8_t *cmd) {
+/* ================= MOCK ================= */
+static int func_called; 
+static char last_cmd[100];
+void mock_func(uint8_t *cmd) {
     func_called++;
     strcpy(last_cmd, (char*)cmd);
 }
-/* ================= TEST TABLE ================= */ cmd_line_t cmd_table[] = {
+/* ================= TEST TABLE ================= */
+cmd_line_t cmd_table[] = {
     {(uint8_t*)"help", mock_func},
     {(uint8_t*)"led", mock_func},
     {0, 0}
 };
-/* ================= SETUP ================= */ void setUp(void) {
+/* ================= SETUP ================= */
+void setUp(void) {
     func_called = 0;
     memset(last_cmd, 0, sizeof(last_cmd));
 }
-void tearDown(void) {} /* ================= TEST ================= */ void test_null_table(void) {
+void tearDown(void) {
+    
+} 
+/* ================= TEST ================= */ 
+void test_null_table(void) {
     uint8_t cmd[] = "help";
     TEST_ASSERT_EQUAL(CMD_TBL_NOT_FOUND,
         cmd_line_parser(NULL, cmd));
