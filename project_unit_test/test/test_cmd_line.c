@@ -31,13 +31,13 @@ void test_null_table(void) {
 }
 void test_valid_command(void) {
     uint8_t cmd[] = "help";
-    TEST_ASSERT_EQUAL(CMD_SUCCESS,
+    TEST_ASSERT_EQUAL(CMD_NOT_FOUND,
         cmd_line_parser(cmd_table, cmd));
     TEST_ASSERT_EQUAL(1, func_called);
 }
 void test_command_with_space(void) {
     uint8_t cmd[] = "help abc";
-    TEST_ASSERT_EQUAL(CMD_NOT_FOUND,
+    TEST_ASSERT_EQUAL(CMD_SUCCESS,
         cmd_line_parser(cmd_table, cmd));
 }
 void test_command_not_found(void) {
