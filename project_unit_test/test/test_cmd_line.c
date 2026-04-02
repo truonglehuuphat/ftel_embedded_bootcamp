@@ -62,6 +62,11 @@ void test_empty_command(void) {
     TEST_ASSERT_EQUAL(CMD_NOT_FOUND,
         cmd_line_parser(cmd_table, cmd));
 }
+void test_command_with_space_head(void) {
+    uint8_t cmd[] = "  help\n";
+    TEST_ASSERT_EQUAL(CMD_NOT_FOUND,
+        cmd_line_parser(cmd_table, cmd));
+}
 /* ================= MAIN ================= */ int main(void) {
     UNITY_BEGIN();
     RUN_TEST(test_null_table);
@@ -71,5 +76,6 @@ void test_empty_command(void) {
     RUN_TEST(test_command_too_long);
     RUN_TEST(test_command_newline);
     RUN_TEST(test_empty_command);
+    RUN_TEST(test_command_with_space_head);
     return UNITY_END();
 }
