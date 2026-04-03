@@ -42,7 +42,7 @@ void run_test(test_case_t *tc){
     test_data->func = tc->func;
     test_data->cmd = tc->cmd;
 
-    int ret = cmd_line_parser(test_data,tc->cmd);
+    uint8_t ret = cmd_line_parser(test_data,tc->cmd);
 
     if(ret != tc->expected_result){
         printf("[FAIL]: %s: expected: %d actual: %d", tc->name_test, tc->expected_result, ret);
