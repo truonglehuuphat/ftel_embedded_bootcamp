@@ -25,9 +25,9 @@ cmd_line_t cmd_table[] = {
 
 typedef struct {
     const char * name_test,
-	pf_cmd_func func;
-    const int8_t* cmd;
-    int8_t expected_result;
+	pf_cmd_func func,
+    const int8_t* cmd,
+    int8_t expected_result
 }test_case_t;
 
 test_case_t test_case[] = {
