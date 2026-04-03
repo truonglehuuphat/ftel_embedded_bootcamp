@@ -61,7 +61,7 @@ void main(){
     printf("Runing test all test case: %d\n", total_testcase);
     for(int i = 0 ; i < total_testcase; i++){
         printf("Runing test %d test case:\n", i);
-        run_test(test_case);
+        run_test(test_case[i]);
     }
 
     return;
