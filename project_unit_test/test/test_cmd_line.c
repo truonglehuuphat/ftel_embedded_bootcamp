@@ -10,12 +10,6 @@ void mock_func(uint8_t *cmd) {
     strcpy(last_cmd, (char*)cmd);
 }
 
-// typedef struct {
-// 	const int8_t* cmd;
-// 	pf_cmd_func func;
-// 	const int8_t* info;
-// } cmd_line_t;
-
 cmd_line_t cmd_table[] = {
     {(uint8_t*)"help", mock_func,(const char*) "HELP"},
     {(uint8_t*)"led", mock_func,(const char*) "LED"},
@@ -40,7 +34,7 @@ test_case_t test_case[] = {
 
 void run_test(test_case_t tc){
     func_called =0;
-   //printf("\s", tc.command);
+
     uint8_t ret = cmd_line_parser(tc.data,tc.command);
 
     if(ret != tc.expected_result){

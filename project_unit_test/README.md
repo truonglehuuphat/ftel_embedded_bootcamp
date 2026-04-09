@@ -87,11 +87,11 @@ Test cases are defined in a structure:
 
 ```c
 typedef struct {
-    char *name_test;
-    pf_cmd_func func;
-    uint8_t* cmd;
+    char * name_test;
+    cmd_line_t *data;
+    uint8_t* command;
     int8_t expected_result;
-} test_case_t;
+}test_case_t;
 ```
 
 ---
@@ -112,6 +112,7 @@ cmd_line_t test_data[] = {
 ```c
 void mock_func(uint8_t *cmd) {
     func_called++;
+    strcpy(last_cmd, (char*)cmd);
 }
 ```
 
@@ -120,14 +121,19 @@ void mock_func(uint8_t *cmd) {
 ### ✔ Test runner
 
 ```c
-void run_test(test_case_t *tc) {
-    uint8_t ret = cmd_line_parser(test_data, tc->cmd);
+void run_test(test_case_t tc){
+    func_called =0;
+   //printf("\s", tc.command);
+    uint8_t ret = cmd_line_parser(tc.data,tc.command);
 
-    if (ret == tc->expected_result) {
-        printf("[PASS]: %s\n", tc->name_test);
-    } else {
-        printf("[FAIL]: %s\n", tc->name_test);
+    if(ret != tc.expected_result){
+        printf("[FAIL]: %s: expected: %d actual: %d\n", tc.name_test, tc.expected_result, ret);
     }
+
+    if(ret == tc.expected_result){
+        printf("[PASS]: %s  expected: %d actual: %d\n", tc.name_test, tc.expected_result, ret);
+    }
+    printf("\n");
 }
 ```
 
