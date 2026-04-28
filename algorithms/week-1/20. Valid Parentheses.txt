@@ -1,0 +1,111 @@
+20. Valid Parentheses
+
+Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
+
+An input string is valid if:
+
+Open brackets must be closed by the same type of brackets.
+Open brackets must be closed in the correct order.
+Every close bracket has a corresponding open bracket of the same type.
+ 
+
+Example 1:
+
+Input: s = "()"
+
+Output: true
+
+Example 2:
+
+Input: s = "()[]{}"
+
+Output: true
+
+Example 3:
+
+Input: s = "(]"
+
+Output: false
+
+Example 4:
+
+Input: s = "([])"
+
+Output: true
+
+Example 5:
+
+Input: s = "([)]"
+
+Output: false
+
+Example 6:
+
+Input: s = "]"
+
+Output: false
+
+
+duyệt chuỗi 
+khi gặp ( thi thêm ) vào vector 
+khi gặp [ thi thêm ] vào vector 
+khi gặp { thi thêm } vào vector 
+
+khi gặp ) ] } thì kiểm tra vector có rỗng không có thì trả về false 
+còn có giá trị thì kiểm tra giá trị cuối của vector có phải ) ] } tương ứng không nếu không thì trả về false 
+loại bỏ giá trị cuối của vector nếu nếu hợp lệ
+
+khi hết vòng for thì kiểm tra vector có rỗng không nếu có thì return true ngược lại thì false
+
+class Solution {
+public:
+    bool isValid(string s) {
+        vector<char> b; 
+        for(char c : s){
+            if (c == '(') {
+                b.push_back(')');
+            }
+            if (c == '[') {
+                b.push_back(']');
+            }
+            if (c == '{') {
+                b.push_back('}');
+            }
+            if (c == ')' || c == ']' || c =='}'){
+                if(b.size()== 0) {
+                    return false;
+                }
+                char checkValid = b.back();
+                b.pop_back();
+                if (checkValid != c) { 
+                    return false;
+                }
+            }
+        }
+        return b.size() == 0;
+    }
+};
+
+
+class Solution {
+    public boolean isValid(String s) {
+        int check_sum = 0;
+        List<Character> ar = new ArrayList<>();
+        for(char c: s.toCharArray()){
+            if( c == '(' || c == '[' || c == '{'){
+                ar.add(c);
+            } else {
+                if (ar.size() == 0) { return false; }
+                if( c == ')' && ar.get(ar.size()-1) != '(' ||
+                c == ']' && ar.get(ar.size()-1) != '[' ||
+                c == '}' && ar.get(ar.size()-1) != '{' )
+                { 
+                    return false; 
+                }
+                ar.remove(ar.size()-1);
+            }
+
+        }
+        return ar.size() == 0;
+        }
+}

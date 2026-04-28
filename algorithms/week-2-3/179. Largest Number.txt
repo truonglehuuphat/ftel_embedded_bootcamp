@@ -1,0 +1,345 @@
+Given a list of non-negative integers nums, arrange them such that they form the largest number and return it.
+
+Since the result may be very large, so you need to return a string instead of an integer.
+
+ 
+
+Example 1:
+
+Input: nums = [10,2]
+Output: "210"
+Example 2:
+
+Input: nums = [3,30,34,5,9]
+Output: "9534330"
+ 
+
+Constraints:
+
+1 <= nums.length <= 100
+0 <= nums[i] <= 10^9
+
+
+
+class Solution {
+public:
+    int digitNumber(int n){
+        int x = n;
+        int result = 0;
+        while(x > 0){
+            x = x / 10;
+            result++;
+        }
+        return result;
+    }
+    string largestNumber(vector<int>& nums) {
+        string ans = "";
+        ans = ans +  to_string(nums[nums.size() -1]);
+        for(int i = nums.size() -2; i >= 0 ;i--){
+            // int n = digitNumber(nums[i]);
+
+            // cout << n << endl;
+            int x = nums[i];
+            // if(x > 10 )
+            // {
+            //     while(x > 0){
+            //         x = x / 10;
+            //         if(x <= 0){
+            //             x= x*10;
+            //             ans= ans + to_string(x);
+            //             break;
+            //         } else {
+            //             ans= ans + to_string(x);
+            //         }
+                    
+            //     }
+            // } else{
+                ans= ans + to_string(x);
+            // }
+        }
+        return ans;
+    }
+};
+
+nhận ra các số so sánh theo ký tự đầu tiên nào lớn nhất thì xếp cuối 
+
+class Solution {
+public:
+    string findMaxNumInStr(string str1, string str2){
+        string res;
+        for(int i = 0; i < str1.length(); i++){
+            // cout << str1[i] << " " << str2[i] << endl;
+            if((str1[i]-48) < (str2[i]-48)){
+                return str2;
+            } else if((str1[i]-48) > (str2[i]-48)){
+                return str1;
+            } else{
+
+            }
+        }
+        return str1;
+    }
+    vector<int> sortFirstChar(vector<int>& nums){
+        // vector<int> res;
+        for(int i = 0; i < nums.size()-1; i++){
+            for(int j = 0; j < nums.size()-1;j++){
+                string a = to_string(nums[j]);
+                string b = to_string(nums[j+1]);
+                // if(a >= 10 ) {a = a/10;}
+                // if(b >= 10 ) {b = b/10;}
+                if(a[0] > b[0] ){
+                    int temp = nums[j];
+                    nums[j] = nums[j+1];
+                    nums[j+1] = temp;
+                }
+            }
+        }
+        return nums;
+    }
+    string largestNumber(vector<int>& nums) {
+        if (nums.size() == 1) return to_string(nums[0]);
+        sortFirstChar(nums);
+        for(int n : nums){
+            cout << n << " ";
+        }
+        cout << "\n";
+        string a = to_string(nums[0]) + to_string(nums[1]);
+        string b = to_string(nums[1]) + to_string(nums[0]);
+        string max = findMaxNumInStr(a, b);
+        cout << max << " ";
+        // for(int i = 2; i < nums.size() ;i++){
+        //     a = max + to_string(nums[i]);
+        //     b = to_string( nums[i]) + max;
+        //     max = findMaxNumInStr(a, b);
+        //     cout << max << " ";
+        // }
+        // cout << "\n";
+        for(int i = 2; i < nums.size() ;i++){
+            a = max + to_string(nums[i]);
+            b = to_string( nums[i]) + max;
+            max = findMaxNumInStr(a, b);
+            cout << max << " ";
+        }
+        return max;
+    }
+};
+
+nhưng phép so sánh ở trên gặp mãng [16 1 128] ghi sai 
+
+1, 16, 128 = 161281 > 161128 > 128161 > 128116
+
+Dường như nó so sánh giá trị số 2 
+
+
+
+tạo map 
+key là chữ 0-9
+[824,938,1399,5607,6973,5703,9609,4398,8247]
+"0": 
+"1": 1399, 
+"2": 
+"3": 
+"4": 4398
+"5": 5607, 5703
+"6": 6973, 
+"7": 
+"8": 824, 8247 
+"9": 938, 9609
+
+map<char,int> map;
+
+for (int n : nums){
+    string toStrNum = to_string(n);
+    key = toStrNum[0];
+    key đó không tồn tại 
+    tạo key mới 
+    nạp giá trị vào key
+}
+
+duyệt từ case có key 9 - 0 giá trị từ cao
+
+sắp xếp mãng giảm dần trong từ key 
+do số ở cuối chắc chắn là số nhỏ nhất và có ý ký tự nhất 
+lập theo số lượng mãng chia 2 
+duyệt từ sau lên truớc 
+kiếm tra index số phía trước có nhỏ size của nó không 
+nếu ký tự  của a[ia] > b[ib] thì đổi chỗ 
+nếu ký tự a[ia] > b[ib] thì tăng biến
+        ia++, ib++; 
+        kiểm tra ia == a.size() thì trừ ia đi 1; để xét ký tự a ở cuối
+        kiểm tra ia > 1 ib > 1 mà ib= ia + 1
+            nếu a[0] > b[cuối]{
+                    đổi chỗ a và b;
+            }
+nếu ký tự a[ia] < b[ib] thoát ra kiểm tra biến kế tiếp         
+
+class Solution {
+public:
+    string findMaxNumInStr(string str1, string str2){
+        string res;
+        for(int i = 0; i < str1.length(); i++){
+            if((str1[i]-48) < (str2[i]-48)){
+                return str2;
+            } else if((str1[i]-48) > (str2[i]-48)){
+                return str1;
+            } else{
+
+            }
+        }
+        return str1;
+    }
+    void sortSecondChar(vector<int>& nums){
+        sort(nums.begin(), nums.end(), greater<int>());
+        for(int j = 0; j < nums.size()/2; j++){
+            for(int i = nums.size()-1; i >= 1; i--){
+                int flag = 0;
+                    string a = to_string(nums[i]);    
+                    string b = to_string(nums[i-1]);
+                    int charA = 0;
+                    int charB = 0;
+                    while(charB < b.size()){
+                        if(a[charA] > b[charB]){
+                            int temp = nums[i-1];
+                            nums[i-1] = nums[i];
+                            nums[i] = temp;
+                            flag = 1;
+                            break;
+                        } else if (a[charA] == b[charB]){
+                            charB++;
+                            charA++;
+                            if(charA >= a.size()){
+                                charA--;
+                            }
+                            if(charB > 1 && charA > 1 && charB == charA + 1){
+                                if(a[0] > b[charB]){
+                                    int temp = nums[i-1];
+                                    nums[i-1] = nums[i];
+                                    nums[i] = temp;
+                                    flag = 1;
+                                    break;
+                                }
+                            }
+                        } else{
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    
+    string largestNumber(vector<int>& nums) {
+        if (nums.size() == 1) return to_string(nums[0]);
+        string max ="";
+        map<char,vector<int>> map;
+        for(int n : nums){
+            string toStrNum = to_string(n);
+            char key = toStrNum[0];
+            map[key].push_back(n);
+        }
+        if(map.size() == 1 ){
+            auto findZero = map.find('0');
+            if(findZero != map.end()){
+                return "0";
+            }
+        }
+        vector<string> listStrMaxNum;
+        for (auto x: map){
+            vector<int> numStr = x.second;
+            sortSecondChar(numStr);
+            for(int tempNum : numStr){
+                cout << tempNum << ":";
+            }
+            cout << "\n";
+            if(numStr.size() == 1){
+                listStrMaxNum.push_back(to_string(numStr[0]));
+            } else{
+                string a = to_string(numStr[0]) + to_string(numStr[1]);
+                string b = to_string(numStr[1]) + to_string(numStr[0]);
+                string tempMax = findMaxNumInStr(a,b);
+                for(int i = 2 ; i < numStr.size(); i++){
+                    a = tempMax + to_string(numStr[i]);
+                    b = to_string(numStr[i]) + tempMax;
+                    tempMax = findMaxNumInStr(a,b);
+                }
+                 listStrMaxNum.push_back(tempMax);
+            }
+        }
+
+        for(int i = listStrMaxNum.size() - 1; i >= 0; i--){
+            max = max + listStrMaxNum[i];
+        }
+
+        return max;
+    }
+};
+
+
+
+class Solution {
+public:
+    string largestNumber(vector<int> &nums) {
+        vector<string> numStrings;
+        // Convert each integer to a string
+        for (int num : nums) {
+            numStrings.push_back(to_string(num));
+        }
+
+        // Sort strings based on concatenated values
+        sort(numStrings.begin(), numStrings.end(),
+             [](string &a, string &b) { return a + b > b + a; });
+
+        // Handle the case where the largest number is zero
+        if (numStrings[0] == "0") return "0";
+
+        // Concatenate sorted strings to form the largest number
+        string largestNum;
+        for (string &numStr : numStrings) {
+            largestNum += numStr;
+        }
+
+        return largestNum;
+    }
+};
+
+
+class Solution {
+
+    public String largestNumber(int[] nums) {
+        // Convert each integer to a string
+        String[] numStrings = new String[nums.length];
+        for (int i = 0; i < nums.length; i++) {
+            numStrings[i] = Integer.toString(nums[i]);
+        }
+
+        // Sort strings based on concatenated values
+        Arrays.sort(numStrings, (a, b) -> (b + a).compareTo(a + b));
+
+        // Handle the case where the largest number is zero
+        if (numStrings[0].equals("0")) {
+            return "0";
+        }
+
+        // Concatenate sorted strings to form the largest number
+        StringBuilder largestNum = new StringBuilder();
+        for (String numStr : numStrings) {
+            largestNum.append(numStr);
+        }
+
+        return largestNum.toString();
+    }
+}
+
+class Solution:
+    def largestNumber(self, nums: List[int]) -> str:
+        # Convert each integer to a string
+        num_strings = [str(num) for num in nums]
+
+        # Sort strings based on concatenated values
+        num_strings.sort(key=lambda a: a * 10, reverse=True)
+
+        # Handle the case where the largest number is zero
+        if num_strings[0] == "0":
+            return "0"
+
+        # Concatenate sorted strings to form the largest number
+        return "".join(num_strings)

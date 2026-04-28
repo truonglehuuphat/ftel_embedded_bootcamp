@@ -1,0 +1,65 @@
+Given two strings ransomNote and magazine, return true if ransomNote can be constructed by using the letters from magazine and false otherwise.
+
+Each letter in magazine can only be used once in ransomNote.
+
+Constraints:
+
+1 <= ransomNote.length, magazine.length <= 105
+ransomNote and magazine consist of lowercase English letters.
+
+Example 1:
+
+Input: ransomNote = "a", magazine = "b"
+Output: false
+Example 2:
+
+Input: ransomNote = "aa", magazine = "ab"
+Output: false
+Example 3:
+
+Input: ransomNote = "aa", magazine = "aab"
+Output: true
+ 
+dùng Hashtable 
+tạo 2 bảng 
+
+class Solution {
+public:
+    bool canConstruct(string ransomNote, string magazine) {
+        int a[300];
+        int b[300];
+        for (char c : ransomNote){
+            a[c]++;
+        }
+        for (char c : magazine){
+            b[c]++;
+        }
+        for(int i = 0 ;i < 300; i++){
+            if(b[i] < a[i]){
+                return false;
+            }
+        }
+        return true;
+    }
+};
+
+
+còn chậm 
+tạo 1 bảng hashtable cho mãng to magazine
+và quét string ransomNote : trừ giá trị của mãng hashtable đi nếu giá trị đó về 0 trướcc khi trừ thì trả về false
+còn chạy hết thì trả về true
+
+class Solution {
+public:
+    bool canConstruct(string ransomNote, string magazine) {
+        int a[26];
+        for (char c : magazine){
+            a[c-'a']++;
+        }
+        for (char c : ransomNote){
+           if(a[c-'a'] == 0) return false;
+           a[c-'a']--;
+        }
+        return true;
+    }
+};

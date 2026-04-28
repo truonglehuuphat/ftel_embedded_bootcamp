@@ -1,0 +1,120 @@
+739. Daily Temperatures
+Given an array of integers temperatures represents the daily temperatures, return an array answer such that answer[i] is the number of days you have to wait after the ith day to get a warmer temperature. If there is no future day for which this is possible, keep answer[i] == 0 instead.
+Example 1:
+
+Input: temperatures = [73,74,75,71,69,72,76,73]
+Output: [1,1,4,2,1,1,0,0]
+Example 2:
+
+Input: temperatures = [30,40,50,60]
+Output: [1,1,1,0]
+Example 3:
+
+Input: temperatures = [30,60,90]
+Output: [1,1,0]
+
+dùng duyệt trâu quét 2 mãng nhưng gặp mãng chỉ có 99, kéo dài tới 100 ký tự mới có 100 thì duyệt trâu gặp lỗi time out.
+
+class Solution {
+public:
+    vector<int> dailyTemperatures(vector<int>& temperatures) {
+        //giá trị đầu tiên - đi tìm giá trị kế tiếp lơn hơn nó.
+        //tìm được rồi thì đếm số khoảng cách bằng 2 con trỏ
+        // nếu i đi tới gần cuối không tìm ra số lớn hơn nữa thì mãng đó bằng 0
+        int i = 0;
+        vector<int> arr;
+        while(i < temperatures.size()){
+            int temp = temperatures[i];
+            int flag = 0;
+            for(int j = i+1; j < temperatures.size(); j++){
+                if(temperatures[i] < temperatures[j]){
+                    arr.push_back(j-i);
+                    flag = 1;
+                    break;
+                }
+            }
+            if(flag == 0){
+                arr.push_back(0);
+            }
+            i++;
+        }
+        return arr;
+        
+        // vector<vector<int>> arr(101);
+        // for(int i = 0; i < temperatures.size() ; i++){
+        //     arr[temperatures[i]].push_back(i);
+        // }
+        // sort(arr.begin(), arr.end(), [](const auto &a, const auto &b){
+        //     return a < b;
+        // });
+
+        // for(auto &p: arr){
+        //     // cout << p << " : ";
+        //     for(auto &b: p){
+        //         cout << b << " ";
+        //     }
+        //     cout << "\n";
+        // }
+        
+        // vector<int> res;
+        // return res;
+        // vector<int> res; 
+        // map<int, vector<int>> map;
+        // for(int i = 0; i < temperatures.size() ; i++){
+        //     map[temperatures[i]].push_back(i);
+        // }
+        // for(auto &p: map){
+        //     cout << p.first << " : ";
+        //     for(auto &b: p.second){
+        //         cout << b << " ";
+        //     }
+        //     cout << "\n";
+        // }
+        // return res;
+    }
+};
+càng nghĩ ra 1 phương pháp nào khác càng rối
+đi giải quyết các giá trị trùng nhau để tiết kiệm thời gain
+nếu giá trị nhiệt độ bằng với nhiệt độ trước đó thì nên trừ vị trí trước đó đi 1;
+hiện tại chỉ xét được với vị trí liền kề trước đó
+
+dùng stack 
+chứa giá trị liền kề lớp kế tiếp
+class Solution {
+public:
+    vector<int> dailyTemperatures(vector<int>& temperatures) {
+        int n = temperatures.size();
+        stack<int> st;
+        vector<int> res(n,0);
+        for(int i = n - 1; i >= 0 ;i--){
+            while(!st.empty()&& (temperatures[st.top()] <= temperatures[i])){
+                st.pop();
+            }
+
+            if(st.size()==0){
+                res[i] = 0;
+            } else{
+                res[i] = st.top() - i;
+            }
+
+            st.push(i);
+        }
+        return res;
+    }
+};
+
+class Solution {
+    public int[] dailyTemperatures(int[] temperatures) {
+        int n = temperatures.length;
+        Stack<Integer> st = new Stack<>();
+        int[] res = new int[n];
+        for(int i = n - 1; i >=0;i--){
+            while(!st.empty() && temperatures[st.peek()] <= temperatures[i]){st.pop();}
+            if(st.size()>0){
+                res[i] = st.peek() - i;
+            }
+            st.push(i);
+        }
+        return res;
+    }
+}

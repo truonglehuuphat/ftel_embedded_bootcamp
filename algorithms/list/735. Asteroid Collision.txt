@@ -1,0 +1,111 @@
+class Solution {
+public:
+    vector<int> asteroidCollision(vector<int>& asteroids) {
+        stack<int> st;
+        stack<int> st2;
+        int b=0;
+        st.push(asteroids[0]);
+        for(int i = 1; i < asteroids.size(); i++){
+            int a = asteroids[i];
+            if(st.empty()) {
+                // cout << " 10: "<< a << endl;
+                st.push(a);
+            }
+            else {
+                // cout << " 14: "<< a << endl;
+                if(a * st.top() < 0 ){
+                    while(!st.empty() && abs(a) >= abs(st.top()) ){
+                        b = abs(st.top());
+                        st.pop();
+                    }
+                    if(st.empty() && abs(a) != b){
+                        st2.push(a);
+                    }
+                    //else {
+                    //     st2.push(b);    
+                    // }
+                }
+                // else if(!st2.empty()) {
+
+                // }
+                 else {
+                    // cout << " a * st.top > 0 : " << a << endl;
+                    st.push(a);
+                }
+            }
+        }
+        vector<int> ans;
+        // vector<int> res;
+        while(!st.empty()){
+            ans.insert(ans.begin(), st.top()); st.pop();
+        }
+        while(!st2.empty()){
+            ans.insert(ans.begin(), st2.top()); st2.pop();
+        }
+        return ans;
+    }
+};
+
+
+class Solution {
+public:
+    vector<int> asteroidCollision(vector<int>& asteroids) {
+        stack<int> stack;
+        int b=0;
+        for(int a: asteroids){
+            if (a > 0) {
+                stack.push(a);
+            } else {
+                while(!stack.empty() && (stack.top() * a < 0) && stack.top() < -a){
+                    stack.pop();
+                }
+                if(!stack.empty() && stack.top() == -a){
+                    b = stack.top();
+                    stack.pop();
+                    continue;  
+                }
+                if(!stack.empty() && stack.top() < -a){
+                    stack.push(a); 
+                }                
+                if( stack.empty()){
+                    stack.push(a);
+                }
+            }
+        }
+        vector<int> ans;
+        while(!stack.empty()){
+            ans.insert(ans.begin(), stack.top()); stack.pop();
+        }
+        return ans;
+    }
+};
+
+
+class Solution {
+public:
+    vector<int> asteroidCollision(vector<int>& asteroids) {
+        stack<int> stack;
+        int b=0;
+        for(int a: asteroids){
+            if (a > 0) {
+                stack.push(a);
+            } else {
+                while(!stack.empty() && (stack.top() * a < 0) && stack.top() < -a){
+                    stack.pop();
+                }
+                if(!stack.empty() && stack.top() == -a){
+                    b = stack.top();
+                    stack.pop();  
+                }
+                else if((!stack.empty() && stack.top() < -a) || stack.empty()){
+                    stack.push(a); 
+                }
+            }
+        }
+        vector<int> ans;
+        while(!stack.empty()){
+            ans.insert(ans.begin(), stack.top()); stack.pop();
+        }
+        return ans;
+    }
+};

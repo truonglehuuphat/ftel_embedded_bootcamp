@@ -1,0 +1,89 @@
+34. Find First and Last Position of Element in Sorted Array
+
+Given an array of integers nums sorted in non-decreasing order, find the starting and ending position of a given target value.
+
+If target is not found in the array, return [-1, -1].
+
+You must write an algorithm with O(log n) runtime complexity.
+
+ 
+
+Example 1:
+
+Input: nums = [5,7,7,8,8,10], target = 8
+Output: [3,4]
+Example 2:
+
+Input: nums = [5,7,7,8,8,10], target = 6
+Output: [-1,-1]
+Example 3:
+
+Input: nums = [], target = 0
+Output: [-1,-1]
+
+mình dùng map đánh đấu từng giá trị ở vị trí nào trong mãng
+rồi tìm nó với target 
+tìm giá min và max trong map[target].
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        map<int, vector<int>> map;
+        for(int i = 0; i < nums.size();i++){
+            map[nums[i]].push_back(i);
+        }
+        auto it = map.find(target);
+        if(it != map.end()){
+            int min_range = *min_element(map[target].begin(),map[target].end());
+            int max_range = *max_element(map[target].begin(),map[target].end());
+            return {min_range, max_range};
+        } else{
+            return {-1,-1};
+        }
+    }
+};
+
+tìm số thì nghỉ ngây tới tìm kiếm nhị phân
+
+
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        int start = findStart(nums,target);
+        int end = findEnd(nums,target);
+        int[] ans = {-1,-1};
+        if(start >= 0 && start < nums.length && nums[start] == target){
+            ans[0] = start;
+            ans[1] = end;
+        }
+        return ans;
+    }
+    private int findStart(int[] nums, int target){
+        int left = 0;
+        int right = nums.length - 1;
+        int ans = -1;
+        while(left <= right){
+            int mid = (left + right) /2;
+            if(nums[mid]>=target){
+                ans = mid;
+                right = mid - 1;
+            } else{
+                left = mid + 1;
+            }
+        }
+        return ans;
+    }
+    private int findEnd(int[] nums, int target){
+        int left = 0;
+        int right = nums.length-1;
+        int ans = -1;
+        while(left <= right){
+            int mid = (left + right) /2;
+            if(nums[mid]<=target){
+                ans = mid;
+                left = mid + 1;
+            } else{
+                right = mid - 1;
+            }
+        }
+        return ans;
+    }
+}

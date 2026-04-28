@@ -1,0 +1,137 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+
+    void intList(ListNode * head, int value){
+        if(head == NULL){
+            head = new ListNode(value);
+            return;
+        }
+    }
+    void addNode(ListNode * head, int value){
+        if(head == NULL){
+            head = new ListNode(value);
+            return;
+        }
+        ListNode * listHead = head;
+        while(listHead){
+            listHead=listHead->next;
+        }
+        ListNode *newNode = new ListNode(value);
+        listHead->next = newNode;
+    }
+
+    ListNode* partition(ListNode* head, int x) {
+        if(head == NULL) {return NULL;}
+        vector<int> arr;
+    
+        for(ListNode * tempNode = head; tempNode != NULL; tempNode= tempNode->next){
+            arr.push_back(tempNode->val);
+        }
+        sort(arr.begin(), arr.end());
+        for(int i = 0; i < arr.size()-1; i++){
+            if(arr[i] == x){
+                int temp = arr[i];
+                arr[i] = arr[i+1];
+                arr[i+1] = temp;
+                break;
+            }
+        }
+
+        ListNode *headList = new ListNode(arr[0]);
+        ListNode *resList = headList; 
+        for(int i = 1 ; i < arr.size(); i++){
+            ListNode *newNode = new ListNode(arr[i]);
+            headList->next=newNode;
+            headList= headList->next;
+        }
+        return resList;
+    }
+};
+
+Nhận ra nếu giá trị nhỏ hơn x thì thêm vào mãng đầu tiên 
+giá trị lớn hơn x thì thêm vào mãng thứ 2 
+ghép 2 mãng đó lại
+nhưng phải kiểm tra
+nếu mãng đầu tiên không có giá trị tức là không có giá trị hợp lợi < x nên trả về head
+còn lại kiểm tra nếu mãng đầu tiên có phần tử không  thì mới nạp giá trị vào mãng 
+kiểm tra mãng thứ 2 có phần tử không thì mới nạp giá trị vào mãng 
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* partition(ListNode* head, int x) {
+        if(head == NULL) {return NULL;}
+        vector<int> arrLTValue;
+        vector<int> arrGEValue;
+        for(ListNode * tempNode = head; tempNode != NULL; tempNode= tempNode->next){
+            if(tempNode->val < x){
+                arrLTValue.push_back(tempNode->val);
+            } else{
+                arrGEValue.push_back(tempNode->val);
+            }
+        }
+        if(arrLTValue.size() == 0){
+            return head;
+        }
+        ListNode *headList = new ListNode(arrLTValue[0]);
+        ListNode *resList = headList;
+        if(arrLTValue.size() > 0){
+            for(int i = 1 ; i < arrLTValue.size(); i++){
+                ListNode *newNode = new ListNode(arrLTValue[i]);
+                headList->next= newNode;
+                headList= headList->next;
+            }
+        }
+        if(arrGEValue.size() > 0){
+            for(int i = 0 ; i < arrGEValue.size(); i++){
+                ListNode *newNode = new ListNode(arrGEValue[i]);
+                headList->next=newNode;
+                headList= headList->next;
+            }
+        }
+
+        return resList;
+    }
+};
+
+class Solution {
+    public ListNode partition(ListNode head, int x) {
+        ListNode left = new ListNode(0);
+        ListNode right = new ListNode(0);
+        ListNode leftTrail = left;
+        ListNode rightTrail = right;
+        while(head != null){
+            if(head.val < x){
+                leftTrail.next = head;
+                leftTrail = leftTrail.next;
+            } else {
+                rightTrail.next = head;
+                rightTrail = rightTrail.next;
+            }
+            head = head.next;
+        }
+        leftTrail.next = right.next;
+        rightTrail.next = null;
+
+        return left.next;
+    }
+}

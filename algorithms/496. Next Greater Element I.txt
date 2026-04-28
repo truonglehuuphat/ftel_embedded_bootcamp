@@ -1,0 +1,80 @@
+The next greater element of some element x in an array is the first greater element that is to the right of x in the same array.
+
+You are given two distinct 0-indexed integer arrays nums1 and nums2, where nums1 is a subset of nums2.
+
+For each 0 <= i < nums1.length, find the index j such that nums1[i] == nums2[j] and determine the next greater element of nums2[j] in nums2. If there is no next greater element, then the answer for this query is -1.
+
+Return an array ans of length nums1.length such that ans[i] is the next greater element as described above.
+
+ 
+
+Example 1:
+
+Input: nums1 = [4,1,2], nums2 = [1,3,4,2]
+Output: [-1,3,-1]
+Explanation: The next greater element for each value of nums1 is as follows:
+- 4 is underlined in nums2 = [1,3,4,2]. There is no next greater element, so the answer is -1.
+- 1 is underlined in nums2 = [1,3,4,2]. The next greater element is 3.
+- 2 is underlined in nums2 = [1,3,4,2]. There is no next greater element, so the answer is -1.
+Example 2:
+
+Input: nums1 = [2,4], nums2 = [1,2,3,4]
+Output: [3,-1]
+Explanation: The next greater element for each value of nums1 is as follows:
+- 2 is underlined in nums2 = [1,2,3,4]. The next greater element is 3.
+- 4 is underlined in nums2 = [1,2,3,4]. There is no next greater element, so the answer is -1.
+
+tìm vị trí của phần tử nums1 trong nums2 rồi từ đó đếm lên tìm giá trị kế tiếp hơn phần tử nums1.
+
+
+class Solution {
+    public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+        int[] res = new int[nums1.length];
+        int sizeNs2= nums2.length;
+        int index = 0;
+        // Arrays.sort(nums2);
+        for(int n1 : nums1){
+            int left = 0;
+            int flag = 0;
+            while(left <= (sizeNs2-1) && (n1 != nums2[left])){
+                left++;
+            }
+            int max = nums2[left];
+            left++;
+            while(left <= (sizeNs2-1)){
+                if(max < nums2[left]) {max = nums2[left]; break;}
+                left++;
+            }
+            if(max != n1){
+                res[index] = max;
+                index++;
+            } else {
+                res[index] = -1;
+                index++;
+            }
+        }
+        return res;
+    }
+}
+
+
+class Solution {
+    public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+       int[] mp = new int[10001];
+       for(int i = 0 ; i < nums2.length ; i++){
+            mp[nums2[i]] = i;
+       }
+       int[] res = new int[nums1.length];
+        for(int i = 0 ; i < nums1.length ; i++){
+            res[i] = solution(nums2, mp[nums1[i]]);
+        }
+       return res;
+    }
+    private
+    int solution(int [] nums, int start){
+        for(int j = start +1 ; j < nums.length ; j++){
+            if(nums[j] > nums[start]) return nums[j];
+        }
+        return -1;
+    }
+}
